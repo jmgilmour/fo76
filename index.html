@@ -1,1 +1,46 @@
 
+<html>
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js" integrity="sha512-90vH1Z83AJY9DmlWa8WkjkV79yfS2n2Oxhsi2dZbIv0nC4E6m5AbH8Nh156kkM7JePmqD6tcZsfad1ueoaovww==" crossorigin="anonymous"></script>
+  <style>
+    html, body, #file-drop {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+    
+    #file-drop {
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <table id="items"></table>
+  <input id="file-drop" type="file" />
+  <script>
+  	const fileDrop = document.getElementById('file-drop');
+    fileDrop.addEventListener('drop', (e) => {    
+    	const reader = new FileReader();
+      reader.onload = (e) => {
+      	fileDrop.style.display = 'none';
+      	const items = document.getElementById('items');
+      	const json = JSON.parse(e.target.result);
+      	let inventory = Object.values(json.characterInventories)[0].playerInventory;
+        inventory =  _.sortBy(inventory, ({ count, weight }) => -1 * count * weight);
+        inventory = _.reject(inventory, ({ count, weight }) => (count * weight) === 0);
+        _.forEach(inventory, (item) => {
+        	/* console.log('>>>>>', item); */
+          const { filterFlag, text, count, weight } = item;
+          const totalWeight = _.round(count * weight, 2);
+        	const tr = document.createElement('tr');
+          tr.classList.add('item');
+          tr.innerHTML = `<td>${filterFlag}</td><td>${text}</td><td>${count}</td><td>${weight}</td><td>${totalWeight}`;
+          items.appendChild(tr);
+        });
+      };
+      reader.readAsText(e.dataTransfer.files[0]);
+      event.preventDefault();
+    });
+  </script>
+</body>
+</html>
