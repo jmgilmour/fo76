@@ -18,6 +18,16 @@
   <table id="items"></table>
   <input id="file-drop" type="file" />
   <script>
+    const types = {
+      2: 'Weapon',
+      3: 'Weapon',
+      4: 'Apparel',
+      8: 'Aid',
+      512: 'Misc',
+      4096: 'Ammo',
+      33280: 'Misc',
+    };
+    
   	const fileDrop = document.getElementById('file-drop');
     fileDrop.addEventListener('drop', (e) => {    
     	const reader = new FileReader();
@@ -34,7 +44,7 @@
           const totalWeight = _.round(count * weight, 2);
         	const tr = document.createElement('tr');
           tr.classList.add('item');
-          tr.innerHTML = `<td>${filterFlag}</td><td>${text}</td><td>${count}</td><td>${weight}</td><td>${totalWeight}`;
+          tr.innerHTML = `<td>${types[filterFlag] || filterFlag}</td><td>${text}</td><td>${count}</td><td>${weight}</td><td>${totalWeight}`;
           items.appendChild(tr);
         });
       };
