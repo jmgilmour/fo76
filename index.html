@@ -46,7 +46,7 @@
           const totalWeight = _.round(count * weight, 2);
         	const tr = document.createElement('tr');
           tr.classList.add('item');
-          tr.innerHTML = `<td>${types[filterFlag] || filterFlag}</td><td>${text}</td><td>${count}</td><td>${weight}</td><td>${totalWeight}`;
+          tr.innerHTML = `<td>${types[filterFlag] || filterFlag}</td><td>${text}</td><td>${count}</td><td>${_.round(weight, 2)}</td><td>${totalWeight}`;
           items.appendChild(tr);
         });
       };
